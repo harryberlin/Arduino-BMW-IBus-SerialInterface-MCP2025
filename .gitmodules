@@ -1,4 +1,4 @@
 [submodule "AltSoftSerial"]
 	path = AltSoftSerial
-	url = https://github.com/neilh10/AltSoftSerial.git
+	url = https://github.com/neilh10/AltSoftSerial
 	branch = release1
