@@ -1,7 +1,7 @@
 /*
   Copyright (c) 2018 Harry Berlin.  All right reserved.
 
-  debug.ibuscommunicator@gmx.de
+  avr-ibus@gmx.net
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -83,4 +83,3 @@ void shut_down()
     
   }
 }
-

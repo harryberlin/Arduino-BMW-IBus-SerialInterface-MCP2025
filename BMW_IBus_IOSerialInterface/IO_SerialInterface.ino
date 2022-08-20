@@ -1,7 +1,7 @@
 /*
   Copyright (c) 2018 Harry Berlin.  All right reserved.
 
-  debug.ibuscommunicator@gmx.de
+  avr-ibus@gmx.net
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -19,12 +19,11 @@
 */
 
 
-void ioif_read() 
-{
+void ioif_read() {
   if (IoIf.available()) {
-    
+
     char input = IoIf.read();
-    
+
     if (input == '\n' || input == '\r') {
       ioif_read_buffer.trim();
       if (ioif_read_buffer.length()) {
@@ -34,45 +33,42 @@ void ioif_read()
 
     } else if (input == '\0') {
       // ignore null char
-      
+
     } else {
       // just add the char
       ioif_read_buffer += input;
-    }    
-    
+    }
+
   }
-  
+
 }
 
 
-void ioif_handle (String &message) 
-{     
+void ioif_handle (String &message) {
   String command[10];
-  getValues(message, ':', command); 
-  
+  getValues(message, ':', command);
+
   // Send IBus Messages
   if (command[0] == F("TX")) {
     ibus_send_hex(command[1]);
     goto finish;
-  }  
+  }
 
   // Alive Message
   if (command[0] == F("PING")) {
-    ioif_send_command(F("PONG"));  
+    ioif_send_command(F("PONG"));
     goto finish;
   }
-  
-  // Unknown
-  ioif_send_command("UKN:"+message);
 
-  finish:
+
+  // Unknown
+  ioif_send_command("UKN:" + message);
+
+finish:
   ;
 }
 
 
-void ioif_send_command(String message) 
-{
-    IoIf.println(message);    
+void ioif_send_command(String message) {
+  IoIf.println(message);
 }
-
-

@@ -1,7 +1,7 @@
 /*
   Copyright (c) 2018 Harry Berlin.  All right reserved.
 
-  debug.ibuscommunicator@gmx.de
+  avr-ibus@gmx.net
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -19,34 +19,28 @@
 */
 
 
-#define SHUT_DOWN_MINUTES 3
+#define DEBUG   //Uncomment for Debug.
 
-#define READ_BUFFER_SIZE 64
-                    
+const byte SHUT_DOWN_MINUTES = 3;
+
+const byte READ_BUFFER_SIZE = 64;                  
 byte read_buffer[READ_BUFFER_SIZE];
 int read_buffer_index = -1;
 
-#define WRITE_BUFFER_SIZE 5
-#define WRITE_COUNTER 40
+const int16_t WRITE_BUFFER_SIZE = 300;
+byte write_buffer[WRITE_BUFFER_SIZE];
+int16_t write_buffer_index = -1;
 
-struct IBus_Msg_Tx { byte msg[40]; };
-IBus_Msg_Tx write_buffer[WRITE_BUFFER_SIZE];
-int write_buffer_index = -1;
 
-#define WAKE_PIN 13
+const byte WAKE_PIN = 13;
 #define wake_set(...) digitalWrite(WAKE_PIN, __VA_ARGS__)
+
 
 String ioif_read_buffer;
 
-#define LAST_TX_MS 10
-#define LAST_RX_MS 10
-
-unsigned long last_rx;
-unsigned long last_tx;
-
 
 #if defined(ARDUINO_AVR_NANO)
-  #include <AltSoftSerial.h>
+  #include "extAltSoftSerial.h" //workaround for parent path include
   #define RX_PIN 8
   #define TX_PIN 9
   #define IoIf  Serial
@@ -57,13 +51,10 @@ unsigned long last_tx;
   #define TX_PIN 18
   #define IoIf Serial
   #define IBus Serial1
-#elif defined(ARDUINO_SAM_DUE)
-  //Due specific code
 #else
-#error Unsupported hardware
+  #error Unsupported hardware
 #endif
 
-#define DEBUG   //Uncomment for Debug.
 
 #ifdef DEBUG    //Macros are usually in all capital letters.
   #define debug_print(...)    IoIf.print(__VA_ARGS__)     //DPRINT is a macro, debug print
@@ -73,8 +64,15 @@ unsigned long last_tx;
   #define debug_println(...)   //now defines a blank line
 #endif
 
-void setup()
-{
+const int IBUS_WRITE_COUNTER = 10;
+const unsigned long LAST_TX_MS = 10;
+const unsigned long LAST_RX_MS = 10;
+
+unsigned long last_rx;
+unsigned long last_tx;
+
+
+void setup() {
   
   pinMode(WAKE_PIN, OUTPUT);
   wake_set(HIGH);
@@ -84,17 +82,13 @@ void setup()
   IBus.begin(9600, SERIAL_8E1);
   IoIf.begin(38400);
 
-  while (!IoIf) { 
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
   
   debug_println(F("IBus begins"));
 
 }
 
 
-void loop() 
-{
+void loop() {
     
   ibus_read();
   
@@ -105,7 +99,3 @@ void loop()
   shut_down();
 
 }
-
-
-
-

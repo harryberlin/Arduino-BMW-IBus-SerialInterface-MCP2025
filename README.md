@@ -17,4 +17,6 @@ You can send some few commands to the Arduino:
 A simple IBus message handle/parse example is included.
 
 
-
+## Donation
+If you like my project and want to support me, feel free for a donation.<br>
+[<img src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif">](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KYAHYEJRUK4PN)
