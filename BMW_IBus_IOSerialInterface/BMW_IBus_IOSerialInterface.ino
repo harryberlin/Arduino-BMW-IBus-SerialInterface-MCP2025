@@ -40,7 +40,7 @@ String ioif_read_buffer;
 
 
 #if defined(ARDUINO_AVR_NANO)
-  #include "extAltSoftSerial.h" //workaround for parent path include
+  #include <AltSoftSerial.h>
   #define RX_PIN 8
   #define TX_PIN 9
   #define IoIf  Serial
